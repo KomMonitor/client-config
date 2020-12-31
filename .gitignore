@@ -1,3 +1,6 @@
+#swagger
+.swagger-codegen
+
 # Logs
 logs
 *.log
