@@ -4,10 +4,20 @@ var fs = require('fs'),
     path = require('path'),
     http = require('http');
 
-var app = require('connect')();
 var swaggerTools = require('swagger-tools');
 var jsyaml = require('js-yaml');
+var cors = require('cors');
+var express = require('express');
 var serverPort = 8088;
+
+var app = express();
+
+const corsOptions = {
+  // exposedHeaders: 'Access-Control-Allow-Origin,Location,Connection,Content-Type,Date,Transfer-Encoding'
+  exposedHeaders: ['Access-Control-Allow-Origin','Location','Connection','Content-Type','Date','Transfer-Encoding','Origin','X-Requested-With', 'Accept'],
+  origin: "*"
+};  
+app.use(cors(corsOptions));
 
 // swaggerRouter configuration
 var options = {

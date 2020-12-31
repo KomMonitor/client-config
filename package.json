@@ -3,18 +3,34 @@
   "version": "0.0.1",
   "description": "KomMonitor Client config file storage server API, which can store and serve various config files for Kommonitor client(s).",
   "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/kommonitor/client-config.git"
+  },
   "scripts": {
-	"prestart": "npm install",
-	"start": "node index.js"
+    "prestart": "npm install",
+    "start": "node index.js"
   },
   "keywords": [
     "swagger"
   ],
-  "license": "Unlicense",
+  "license": "Apache-2.0",
   "private": true,
   "dependencies": {
     "connect": "^3.2.0",
+    "cors": "^2.8.4",
+    "express": "^4.16.4",
     "js-yaml": "^3.3.0",
-    "swagger-tools": "0.10.1"
+    "swagger-tools": "^0.10.4"
+  },
+  "devDependencies": {
+    "jshint": "^2.11.0",
+    "license-checker": "^25.0.1",
+    "npm-license-crawler": "^0.2.1"
+  },
+  "jshintConfig": {
+    "undef": true,
+    "unused": true,
+    "esversion": 8
   }
 }
