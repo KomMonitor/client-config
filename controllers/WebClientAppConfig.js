@@ -1,25 +1,32 @@
 'use strict';
 
 var utils = require('../utils/writer.js');
-var WebClientAppConfig = require('../service/WebClientAppConfigService');
+var fs = require("fs");
 
-module.exports.getWebAppConfig = function getWebAppConfig (req, res, next) {
-  WebClientAppConfig.getWebAppConfig()
-    .then(function (response) {
-      utils.writeJson(res, response);
-    })
-    .catch(function (response) {
-      utils.writeJson(res, response);
-    });
+const storageLocation = "./configStorage/webClientAppConfig.js";
+
+module.exports.getWebAppConfig = function getWebAppConfig(req, res, next) {
+
+  res.download(storageLocation, "appConfig.js");
 };
 
-module.exports.postWebAppConfig = function postWebAppConfig (req, res, next) {
+module.exports.postWebAppConfig = function postWebAppConfig(req, res, next) {
   var appConfig = req.swagger.params['appConfig'].value;
-  WebClientAppConfig.postWebAppConfig(appConfig)
-    .then(function (response) {
-      utils.writeJson(res, response);
-    })
-    .catch(function (response) {
-      utils.writeJson(res, response);
-    });
+
+  fs.writeFileSync(storageLocation, appConfig.buffer, function (error) {
+    if (error) {
+      console.error("ERROR: response object: " + error);
+
+      var errorResponseWithLocationHeader = utils.respondWithLocationHeader(500, error);
+      utils.writeLocationHeader(res, errorResponseWithLocationHeader);
+
+      return;
+    }
+  });
+
+  console.log("New web app config file was saved!");
+
+  var responseWithLocationHeader = utils.respondWithLocationHeader(201, storageLocation);
+
+  utils.writeLocationHeader(res, responseWithLocationHeader);
 };
