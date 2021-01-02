@@ -1,5 +1,7 @@
 'use strict';
 
+require('dotenv').config();
+
 var fs = require('fs'),
     path = require('path'),
     http = require('http');
@@ -8,7 +10,7 @@ var swaggerTools = require('swagger-tools');
 var jsyaml = require('js-yaml');
 var cors = require('cors');
 var express = require('express');
-var serverPort = 8088;
+var serverPort = process.env.PORT;
 
 var app = express();
 
