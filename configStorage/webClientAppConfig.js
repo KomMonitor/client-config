@@ -2,12 +2,20 @@ try {
   
   window.__env = window.__env || {};
 
+  window.__env.appTitle = "KomMonitor (Pilotversion)";
+
   // Whether or not to enable debug mode
   // Setting this to false will disable console output
   window.__env.enableDebug = true;
 
   // enable/disable role based access using keycloak
   window.__env.enableKeycloakSecurity = false;
+
+  // enable and show/hide switch to toggle basic and advanced mode
+  // this feature can hide certain app elements via ID if in basic mode
+  // configure elements in admin page app settings via controls-config file
+  window.__env.isAdvancedMode = true; // controls if advanced mode is activated on startup
+  window.__env.showAdvancedModeSwitch = true; // controls if toggle switch is at all displayed for toggling basinc/advanced mode  
 
   // encrypted data transfer from Data Management API settings
   window.__env.encryption = {
@@ -16,7 +24,7 @@ try {
     ivLength_byte: 16
   };
 
-    /*
+  /*
   PROPERTIES used within greetings window (infoModal component)
   to insert custom LOGO by URL with custom width
   and adjust individual information text
@@ -29,6 +37,7 @@ try {
  window.__env.customGreetingsContact_organisation = "Hochschule Bochum, Fachbereich Geod&auml;sie";
  window.__env.customGreetingsContact_mail = "christian.danowski-buhren@hs-bochum.de";
  window.__env.customGreetingsTextInfoMessage = ""; // as HTML; only set if you want to give users some extra hints; if empty will be ignored
+  
 
   // admin user credentials to log into admin view in No-Keycloak-Settings
   window.__env.adminUserName = "Admin";
@@ -162,15 +171,6 @@ try {
       attribution_html: "Stadt Essen: Amt f&uumlr Geoinformation, Vermessung und Kataster", 
       minZoomLevel: window.__env.minZoomLevel, 
       maxZoomLevel: window.__env.maxZoomLevel 
-    },
-    {
-      name: "Test", 
-      url: "https://sgx.geodatenzentrum.de/wms_topplus_open?", 
-      layerType: "WMS", 
-      layerName_WMS: "web", 
-      attribution_html: "Stadt Essen: Amt f&uumlr Geoinformation, Vermessung und Kataster", 
-      minZoomLevel: window.__env.minZoomLevel, 
-      maxZoomLevel: window.__env.maxZoomLevel 
     }
   ];
 
@@ -225,7 +225,7 @@ try {
   window.__env.arrayOfNameSubstringsForHidingGeoresources = [];
 
   // e-mail recipient for feedback mail
-  window.__env.feedbackMailRecipient = "thomas.blasche@amt62.essen.de";
+  window.__env.feedbackMailRecipient = "christian.danowski-buhren@hochschule-bochum.de";
   // window.__env.feedbackMailRecipient = "christian.danowski-buhren@hs-bochum.de";
 
   // config array of available options for choosing update interval of indicators
@@ -303,14 +303,6 @@ try {
         apiName: "DYNAMIC_STANDARDIZED"
     }
     
-  ];
-
-  // old paramter value  - not used anymore due to importer component
-  window.__env.geodataSourceFormats = [
-    {
-        displayName: "GeoJSON FeatureCollection",
-        value: "geojson"
-    }
   ];
 
   // array of available WMS datasets
