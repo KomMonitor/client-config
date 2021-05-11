@@ -1,4 +1,4 @@
 # CHANGELOG
 
-## RELEASE 0.9.5
+## RELEASE 1.0.0
 initial versioned release
