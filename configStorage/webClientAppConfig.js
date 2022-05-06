@@ -71,11 +71,6 @@ try {
   window.__env.extendedInfoModalTabTitle = "Weitere Informationen"  // title of the second tab
   window.__env.extendedInfoModalHTMLMessage = "";  // message in the second tab as HTML
 
-  
-  // admin user credentials to log into admin view in No-Keycloak-Settings
-  window.__env.adminUserName = "Admin";
-  window.__env.adminPassword = "kmAdmin";
-
   // property names of feature id and name (relevant for all spatial features) - KomMonitor specific
   // DO NOT CHANGE THEM - ONLY IF YOU REALLY KNOW WHAT YOU ARE DOING
   window.__env.FEATURE_ID_PROPERTY_NAME = "ID";
