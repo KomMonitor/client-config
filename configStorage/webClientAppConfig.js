@@ -13,7 +13,7 @@ try {
   window.__env.enableDebug = true;
 
   // enable/disable role based access using keycloak
-  window.__env.enableKeycloakSecurity = false;
+  window.__env.enableKeycloakSecurity = true;
   // role name within keycloak kommonitor realm (not master realm) that shall be used as administrator role for kommonitor
   window.__env.keycloakKommonitorAdminRoleName = "administrator";
 
@@ -94,12 +94,16 @@ try {
 
   // Open Route Service URL
   window.__env.targetUrlToReachabilityService_ORS = 'https://ors5.fbg-hsbo.de';
+  // window.__env.targetUrlToReachabilityService_ORS = 'http://localhost:8082';
 
   // Open Trip Planner URL - currently not integrated
   window.__env.targetUrlToReachabilityService_OTP = 'http://localhost:8090/opentripplanner';
 
   // Data Imporret URL
   window.__env.targetUrlToImporterService = 'http://localhost:8087/importer/';
+
+  // KomMonitor Geocoder Proxy
+  window.__env.targetUrlToGeocoderService = 'https://geocoder.fbg-hsbo.de/nominatim/';
 
   // optional geometry simplification (a feature of Data Management API)
   window.__env.simplifyGeometriesParameterName = "simplifyGeometries";
