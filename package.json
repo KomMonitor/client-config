@@ -1,6 +1,6 @@
 {
   "name": "kommonitor-client-config-storage-server-api",
-  "version": "1.3.0",
+  "version": "2.0.0-beta",
   "description": "KomMonitor Client config file storage server API, which can store and serve various config files for Kommonitor client(s).",
   "main": "index.js",
   "repository": {
