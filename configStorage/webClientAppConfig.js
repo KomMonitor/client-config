@@ -50,11 +50,11 @@ try {
   PROPERTIES used within special modal (spatialUnitNotification component)
   to show a customizable HTMLText only when user selects a certian spatial unit for any indicator
   */
-  window.__env.enableSpatialUnitNotificationSelection = true; // controls if a notification should be shown when selecting certain spatial units
-  window.__env.enableSpatialUnitNotificationButton = true; // enables button to manually open spatial unit notification
+  window.__env.enableSpatialUnitNotificationSelection = false; // controls if a notification should be shown when selecting certain spatial units
+  window.__env.enableSpatialUnitNotificationButton = false; // enables button to manually open spatial unit notification
   window.__env.spatialUnitNotificationSelection = ["Baublockebene", ""]; // unit(s) for which the notification is shown
   window.__env.spatialUnitNotificationTitle = "Informationsverlust auf kleinräumigen Ebenen (Bau- und Mittelblock)"; // title of the notification window
-  window.__env.spatialUnitNotificationMessage = "<p align='justify'>Alle Daten, die im smartdemography-Portal dargestellt werden, halten die statistische Geheimhaltung ein. Das bedeutet, dass Angaben zu einzelnen Personen nicht offengelegt werden, insbesondere auch, wenn aus aggregierten Werten R&uuml;ckschl&uuml;sse zu Einzelangaben erm&ouml;glicht werden. Aus diesem Grund werden Indikatorenwerte, die in einem r&auml;umlichen Aggregat eine absolute Fallzahl von &lt; 3 Einwohnern aufweisen, so behandelt, als h&auml;tten diese 0 Einwohner.<br />\
+  window.__env.spatialUnitNotificationMessage = "<p align='justify'>Alle Daten, die im KomMonitor-Portal dargestellt werden, halten die statistische Geheimhaltung ein. Das bedeutet, dass Angaben zu einzelnen Personen nicht offengelegt werden, insbesondere auch, wenn aus aggregierten Werten R&uuml;ckschl&uuml;sse zu Einzelangaben erm&ouml;glicht werden. Aus diesem Grund werden Indikatorenwerte, die in einem r&auml;umlichen Aggregat eine absolute Fallzahl von &lt; 3 Einwohnern aufweisen, so behandelt, als h&auml;tten diese 0 Einwohner.<br />\
     Diese Methode der statistischen Geheimhaltung kann zu einem teilweise hohen Informationsverlust auf kleinr&auml;umigen Ebenen f&uuml;hren.<br />\
     Dies l&auml;sst sich daran erkennen, dass die Fallzahlen insgesamt niedrig sind und viele Gebiete 0-Werte haben. Eine fl&auml;chendeckendes Bild ist somit nicht m&ouml;glich.<br />\
     Dennoch bieten diese Indikatoren die M&ouml;glichkeit, &quot;Hot-Spots&quot; und &quot;Cluster&quot; der jeweiligen Indikatoren zu ermitteln.<br />\
@@ -99,7 +99,7 @@ try {
   window.__env.targetUrlToImporterService = 'http://localhost:8087/importer/';
 
   // KomMonitor Geocoder Proxy
-  window.__env.targetUrlToGeocoderService = 'https://geocoder.fbg-hsbo.de/nominatim/';
+  window.__env.targetUrlToGeocoderService = 'https://geocoder.fbg-hsbo.de/nominatim';
 
   // optional geometry simplification (a feature of Data Management API)
   window.__env.simplifyGeometriesParameterName = "simplifyGeometries";
@@ -172,7 +172,7 @@ try {
       name: "NRW Digitale Topographische Karte", 
       url: "https://www.wms.nrw.de/geobasis/wms_nw_dtk?", 
       layerType: "WMS", 
-      layerName_WMS: "nw_dtk_col", 
+      layerName_WMS: "nw_dtk_sw", 
       attribution_html: "Map data © <a href='https://www.bezreg-koeln.nrw.de/brk_internet/geobasis/'>Geobasis NRW</a>", 
       minZoomLevel: window.__env.minZoomLevel, 
       maxZoomLevel: 20 
@@ -183,24 +183,6 @@ try {
       layerType: "WMS",
       layerName_WMS: "nw_dop_rgb", 
       attribution_html: "Map data © <a href='https://www.bezreg-koeln.nrw.de/brk_internet/geobasis/'>Geobasis NRW</a>", 
-      minZoomLevel: window.__env.minZoomLevel, 
-      maxZoomLevel: window.__env.maxZoomLevel 
-    },
-    {
-      name: "Stadt Essen - Automatisierte Liegenschaftskarte", 
-      url: "https://geo.essen.de/arcgis/services/basemap/Stadtplanpaket_ALK_grau/MapServer/WMSServer?",
-      layerType: "WMS", 
-      layerName_WMS: "0,1,2,3", 
-      attribution_html: "Stadt Essen: Amt f&uumlr Geoinformation, Vermessung und Kataster", 
-      minZoomLevel: window.__env.minZoomLevel, 
-      maxZoomLevel: window.__env.maxZoomLevel 
-    },
-    {
-      name: "Stadt Essen - Amtliche Basiskarte", 
-      url: "https://geo.essen.de/arcgis/services/basemap/Uebersicht_ABK_Stadtgrundkarte/MapServer/WMSServer?", 
-      layerType: "WMS", 
-      layerName_WMS: "nw_dop_rgb", 
-      attribution_html: "Stadt Essen: Amt f&uumlr Geoinformation, Vermessung und Kataster", 
       minZoomLevel: window.__env.minZoomLevel, 
       maxZoomLevel: window.__env.maxZoomLevel 
     }
@@ -348,13 +330,6 @@ try {
     //   layerName:"laerm"	// name of WMS layer to display
     // },
     {
-      title: "Lärmkartierung - Test",
-      description: "Veröffentlichung der Lärmkarten gemäß Lärmkartierung nach Richtlinie 2002/49/EG - EU-Umgebungslärmrichtlinie <br/><br/><b>Maßstabsabhängige Darstellung - ggf. zoomen erforderlich</b>",
-      url: "https://www.wms.nrw.de/umwelt/laerm?",
-      topicReference: "3af3b65e-4792-4998-8531-54616564b5bc",
-      layerName:"laerm"	
-    },
-    {
       title: "Unfalldaten 2019",
       description: "Unfalldaten des statistischen Bundesamtes</b>",
       url: "https://www.wms.nrw.de/wms/unfallatlas?",
@@ -431,18 +406,6 @@ try {
       topicReference: "e94c8100-3790-4ddd-b977-fe48b4f93e26",
       layerName: "SCB_NGT"
     },
-    // {
-    //   title: "Lärmkartierung - Gebaeude",
-    //   description: "Veröffentlichung der Lärmkarten gemäß Lärmkartierung nach Richtlinie 2002/49/EG - EU-Umgebungslärmrichtlinie <br/><br/><b>Ma&szlig;stabsabh&auml;ngige Darstellung - ggf. zoomen erforderlich</b>",
-    //   url: "https://www.wms.nrw.de/umwelt/laerm?",
-    //   layerName: "Gebaeude"
-    // },
-    // {
-    //   title: "Lärmkartierung - Modell",
-    //   description: "Veröffentlichung der Lärmkarten gemäß Lärmkartierung nach Richtlinie 2002/49/EG - EU-Umgebungslärmrichtlinie <br/><br/><b>Ma&szlig;stabsabh&auml;ngige Darstellung - ggf. zoomen erforderlich</b>",
-    //   url: "https://www.wms.nrw.de/umwelt/laerm?",
-    //   layerName: "Modell"
-    // },
     {
       title: "Versiegelungsgrad - 2006 anhand von Copernicus Satellitendaten - 20m Rasterzellen",
       description: "Mehr Informationen unter <a href='https://land.copernicus.eu/pan-european/high-resolution-layers/imperviousness' rel='noopener noreferrer' target='_blank'>https://land.copernicus.eu/pan-european/high-resolution-layers/imperviousness</a>",
@@ -548,30 +511,6 @@ try {
     //   },
     //   topicReference: "c712af89-ff11-40ff-ad84-b3592901e085"  // id of georesource topic entry which shall be used to display the WFS dataset entry 
     // },
-    {
-      title: "Bodennutzung - Bebauungsplanumringe",
-      description: "Umringe der Bebauungspl&auml;ne gem&auml;&szlig; geodaten.metropoleruhr.de. <b>WFS-Dienst unterst&uuml;tzt keine r&auml;umllichen Filter. Daher m&uuml;ssen zwingend alle Features abgerufen werden</b>.",
-      url: "https://geodaten.metropoleruhr.de/inspire/bodennutzung/metropoleruhr?",
-      featureTypeNamespace: "ms",
-      featureTypeName: "bplan_stand",
-      featureTypeGeometryName: "geom",
-      geometryType: "AOI", // POI|LOI|AOI
-      poiSymbolColor: "white", // ['white', 'red', 'orange', 'beige', 'green', 'blue', 'purple', 'pink', 'gray', 'black']
-      poiMarkerColor: "red", // ['white', 'red', 'orange', 'beige', 'green', 'blue', 'purple', 'pink', 'gray', 'black']
-      poiSymbolBootstrap3Name: "home",
-      loiColor: "#00aabb",
-      loiWidth: 3,
-      loiDashArrayString: "",
-      aoiColor: "#00aabb",
-      filterFeaturesToMapBBOX: false,
-      filterEncoding: {
-        // PropertyIsEqualTo: {
-        //   propertyName: undefined,
-        //   propertyValue: undefined
-      // }
-      },
-      topicReference: "c712af89-ff11-40ff-ad84-b3592901e085"
-    }
   ];
 
 } catch (error) {
