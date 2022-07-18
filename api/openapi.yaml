@@ -1,0 +1,143 @@
+openapi: 3.0.1
+info:
+  title: KomMonitor Client Config Storage Server API
+  description: KomMonitor Client config file storage server API, which can store and
+    serve various config files for Kommonitor client(s).
+  termsOfService: http://swagger.io/terms/
+  contact:
+    email: christian.danowski-buhren@hs-bochum.de
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  version: 0.0.1
+externalDocs:
+  description: Find out more about Swagger
+  url: http://swagger.io
+servers:
+- url: http://localhost:8088/config
+- url: https://localhost:8088/config
+tags:
+- name: web-client app config
+  description: Config for Web Client application configuration
+- name: web-client keycloak config
+  description: Config for Web Client Keycloak configuration
+- name: web-client controls config
+  description: Config for Web Client controls configuration
+paths:
+  /client-app-config:
+    get:
+      tags:
+      - web-client app config
+      summary: retrieve web app client config.
+      description: retrieve web app client config.
+      operationId: getWebAppConfig
+      responses:
+        200:
+          description: The web app config file as JavaScript file.
+          content:
+            application/javascript:
+              schema:
+                type: string
+                format: binary
+      x-swagger-router-controller: WebClientAppConfig
+    post:
+      tags:
+      - web-client app config
+      summary: Send web app client config to be stored on server.
+      description: Send web app client config to be stored on server.
+      operationId: postWebAppConfig
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              properties:
+                appConfig:
+                  type: string
+                  description: The file to upload as javascript file.
+                  format: binary
+      responses:
+        200:
+          description: OK
+          content: {}
+        500:
+          description: Error
+          content: {}
+      x-swagger-router-controller: WebClientAppConfig
+  /client-keycloak-config:
+    get:
+      tags:
+      - web-client keycloak config
+      summary: retrieve web app client keycloak config.
+      description: retrieve web app client keycloak config.
+      operationId: getWebAppKeycloakConfig
+      responses:
+        200:
+          description: The web app keycloak config file as JSON file.
+          content:
+            application/json:
+              schema:
+                type: string
+                format: binary
+      x-swagger-router-controller: WebClientKeycloakConfig
+    post:
+      tags:
+      - web-client keycloak config
+      summary: Send web app client keycloak config to be stored on server.
+      description: Send web app client keycloak config to be stored on server.
+      operationId: postWebAppKeycloakConfig
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              properties:
+                appConfig:
+                  type: string
+                  description: The file to upload as JSON file.
+                  format: binary
+      responses:
+        200:
+          description: OK
+          content: {}
+        500:
+          description: Error
+          content: {}
+      x-swagger-router-controller: WebClientKeycloakConfig
+  /client-controls-config:
+    get:
+      tags:
+      - web-client controls config
+      summary: retrieve web app client controls config.
+      description: retrieve web app client controls config.
+      operationId: getWebAppControlsConfig
+      responses:
+        200:
+          description: The web app controls config file as JSON file.
+          content:
+            application/json:
+              schema:
+                type: string
+                format: binary
+      x-swagger-router-controller: WebClientControlsConfig
+    post:
+      tags:
+      - web-client controls config
+      summary: Send web app client controls config to be stored on server.
+      description: Send web app client controls config to be stored on server.
+      operationId: postWebAppControlsConfig
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              properties:
+                appConfig:
+                  type: string
+                  description: The file to upload as JSON file.
+                  format: binary
+      responses:
+        200:
+          description: OK
+          content: {}
+        500:
+          description: Error
+          content: {}
+      x-swagger-router-controller: WebClientControlsConfig
