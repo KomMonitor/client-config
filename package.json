@@ -18,14 +18,15 @@
   "license": "Apache-2.0",
   "private": true,
   "dependencies": {
+    "axios": "^0.27.2",
     "connect": "^3.2.0",
     "cors": "^2.8.4",
     "dotenv": "^6.0.0",
     "express": "^4.17.1",
-    "express-session": "^1.17.3",
     "js-yaml": "^3.3.0",
-    "keycloak-connect": "18.0.2",
-    "oas3-tools": "^2.2.3"
+    "kommonitor-keycloak-helper": "git+https://github.com/KomMonitor/keycloak-helper.git",
+    "oas3-tools": "^2.2.3",
+    "querystring": "^0.2.1"
   },
   "devDependencies": {
     "@release-it/keep-a-changelog": "^2.2.2",

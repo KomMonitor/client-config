@@ -10,7 +10,7 @@ module.exports.getWebAppControlsConfig = function getWebAppControlsConfig (req, 
 };
 
 module.exports.postWebAppControlsConfig = function postWebAppControlsConfig (req, res, next) {
-  var appConfig = req.swagger.params['appConfig'].value;
+  var appConfig = req.files[0];
 
   fs.writeFileSync(storageLocation, appConfig.buffer, function (error) {
     if (error) {

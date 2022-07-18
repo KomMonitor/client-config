@@ -5,26 +5,15 @@ require('dotenv').config();
 var fs = require('fs'),
     path = require('path'),
     http = require('http');
+var keycloakHelperService = require("kommonitor-keycloak-helper");
+keycloakHelperService.initKeycloakHelper(process.env.KEYCLOAK_AUTH_SERVER_URL, process.env.KEYCLOAK_REALM, process.env.KEYCLOAK_RESOURCE, process.env.KEYCLOAK_CLIENT_SECRET, undefined, undefined, process.env.KOMMONITOR_ADMIN_ROLENAME);
+
 
 var oas3Tools = require('oas3-tools');
 var jsyaml = require('js-yaml');
 var cors = require('cors');
 var express = require('express');
 var serverPort = process.env.PORT;
-
-// const session = require('express-session');
-// const Keycloak = require('keycloak-connect');
-
-// const memoryStore = new session.MemoryStore();
-// const kcConfig = {
-//   clientId: 'kommonitor-client-config',
-//   bearerOnly: true,
-//   serverUrl: 'http://localhost:8090',
-//   realm: 'kommonitor-gib',
-//   realmPublicKey: 'MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAjaWRPI4mgkwzii8riv4G0Gq4Znjq/UY3Lq3b0+DUUnCqs9ytZ5+1ONGDHi54yV8DjlVmlkay6ckP9QPOgdP3qRa/5y1pG7RqKdnK8twFZ6saqAbhE12gZcXRK7aWD/qQ/VVxOsIYSfmeGY+zzNORN9PGs7lSwZSR9XsFzyolpl4do/WDU/QsJry8nHwOklJjLPlI3+U7gpXKgYtzXtTV8ex93gtrmeWpwNlhGwZ9CSaO/mEKxJpXGtDFmiNGuW8MoluoyOxu0Qb4tkQfmfc4V9polHNDhnprJGZhoSdsBYB49AJ2E1bTVAjQ+2ENfX9K77dtnU0Z7p7E/iYyVaVtlQIDAQAB'
-// };
-
-// const keycloak = new Keycloak({ store: memoryStore }, kcConfig);
 
 // swaggerRouter configuration
 var options = {
@@ -47,6 +36,14 @@ const corsOptions = {
 
 // Add headers
 app.use(/.*/, cors(corsOptions));
+
+if(JSON.parse(process.env.KEYCLOAK_ENABLED)){
+  app.use(async function(req, res, next) {
+    // intercept requests to perform any keycloak protection checks.
+    await keycloakHelperService.checkKeycloakProtection(req, res, next, "POST");
+  });
+}
+
 
 for (let i = 2; i < openApiApp._router.stack.length; i++) {
   app._router.stack.push(openApiApp._router.stack[i]);

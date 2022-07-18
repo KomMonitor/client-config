@@ -11,7 +11,7 @@ module.exports.getWebAppConfig = function getWebAppConfig(req, res, next) {
 };
 
 module.exports.postWebAppConfig = function postWebAppConfig(req, res, next) {
-  var appConfig = req.swagger.params['appConfig'].value;
+  var appConfig = req.files[0];
 
   fs.writeFileSync(storageLocation, appConfig.buffer, function (error) {
     if (error) {
