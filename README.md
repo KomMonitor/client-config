@@ -40,16 +40,17 @@ This **Client Config Service** offers REST endpoints to store and fetch configur
 
 The respective content of each file may change over time. Please refer to the documentation of the [KomMonitor Web Client component](https://github.com/KomMonitor/web-client) to inspect each config file options or get hints on how to adjust contents. 
 
-The described REST operations are specified using [Swagger/OpenAPI v2](https://swagger.io). The corresponding ```swagger.yaml``` containing the REST API specification is located at ```api/swagger.yaml```. To inspect the REST API you may use the online [Swagger Editor](https://editor.swagger.io/) or, having access to a running instance of the **KomMonitor Client Config REST API** simply navigate to ```<pathToDeyployedInstance>/docs```, e.g. ```localhost:8088/docs```.
+The described REST operations are specified using [Swagger/OpenAPI v3](https://swagger.io). The corresponding ```openapi.yaml``` containing the REST API specification is located at ```api/openapi.yaml```. To inspect the REST API you may use the online [Swagger Editor](https://editor.swagger.io/) or, having access to a running instance of the **KomMonitor Client Config REST API** simply navigate to ```<pathToDeyployedInstance>/docs```, e.g. ```localhost:8088/docs```.
 
 The service is implemented as a NodeJS server application.
 
 ## Dependencies to other KomMonitor Components
-KomMonitor Client Config service currently has no dependencies. It is required by **Web client** component. In Future a Keycloak connection should be implemented to secure REST endpoint access if KomMonitor is launched using Keycloak-based data protection 
+Since version 2.0.0 KomMonitor Client Config service requires **Keycloak** for authenticated access to POST requests. Only KomMonitor administrators shall be allowed to call the POST endpoints of this service. Within the Keycloak realm the **client-config** component must be integrated as a realm client with access type ***confidential*** so that a keycloak secret can be retrieved and configured.
+The **client config** component itself is required by **Web client** component.
 
 
 ## Installation / Building Information
-Being a NodeJS server project, installation and building of the service is as simple as calling ```npm install``` to get all the node module dependencies and run `npm start`. This will start the service with default configuration on `localhost:8088`. Even Docker images can be acquired with ease, as described below. However, depending on your environment configuration aspects have to be adjusted first.
+Being a NodeJS server project, installation and building of the service is as simple as calling ```npm install``` to get all the node module dependencies, then configure the service by adjusting the variables in ``` env.js ``` and eventually run `npm start`. This will start the service per default on `localhost:8088`. Even Docker images can be acquired with ease, as described below. However, depending on your environment configuration aspects have to be adjusted first.
 
 ### Configuration
 Similar to other **KomMonitor** components, some settings are required, especially to adjust connection details to other linked services to your local environment. This NodeJS app makes use of `dotenv` module, which parses a file called `.env` located at project root when starting the app to populate its properties to app components.
@@ -59,8 +60,13 @@ The central configuration file is located at [.env](./.env). Several important a
 
 ```yml
 
-# server port
-PORT=8088
+PORT=8088 # server port
+KEYCLOAK_ENABLED=true # enable/disable keycloak
+KEYCLOAK_REALM=kommonitor # keycloak realm name
+KEYCLOAK_AUTH_SERVER_URL=http://localhost:8080/auth/ # keycloak target URL inlcuding /auth/
+KEYCLOAK_RESOURCE=kommonitor-client-config # keycloak client name
+KEYCLOAK_CLIENT_SECRET=keycloak-secret # keycloak client secret using access type confidential
+KOMMONITOR_ADMIN_ROLENAME=kommonitor-creator # name of kommonitor admin role within keycloak - default is 'kommonitor-creator'
 
 ```
 
@@ -81,13 +87,13 @@ When installed and configured PM2, the **KomMonitor Processing Engine** can be s
 To shutdown call `pm2 stop <app_name>` in the terminal. This will stop the service. To completely remove it from PM2, call `pm2 delete <app_name>`.
 
 ### Docker
-The **KomMonitor Processing Engine** can also be build and deployed as Docker image (i.e. `docker build -t kommonitor/client-config:latest .`). The project contains the associated `Dockerfile` and an exemplar `docker-compose.yml` on project root level. The Dockerfile contains a `RUN npm install --production` command, so necessary node dependencies will be fetched on build time.
+The **KomMonitor Client Config** component can also be build and deployed as Docker image (i.e. `docker build -t kommonitor/client-config:latest .`). The project contains the associated `Dockerfile` and an exemplar `docker-compose.yml` on project root level. The Dockerfile contains a `RUN npm install --production` command, so necessary node dependencies will be fetched on build time.
 
 The exemplar [docker-compose.yml](./docker-compose.yml) file specifies only a the **web client** and **client config service** components of the KomMonitor stack
 
 ### Exemplar docker-compose File with explanatory comments
 
-Only contains subset of whole KomMonitor stack to focus on the config parameters of this component
+Only contains subset of whole KomMonitor stack to focus on the config parameters of this component. See separate [KomMonitor docker repository](https://github.com/KomMonitor/docker) for full information on launching all KomMonitor components via docker.
 
 ```yml
 

@@ -4,6 +4,7 @@ This NodeJS project is part of the [KomMonitor](http://kommonitor.de) spatial da
 
 ## Quick Links And Further Information on KomMonitor
    - [DockerHub repositories of KomMonitor Stack](https://hub.docker.com/orgs/kommonitor/repositories)
+   - [KomMonitor Docker Repository including default docker-compose templates and default resource files for keycloak and KomMonitor stack](https://github.com/KomMonitor/docker)
    - [Github Repositories of KomMonitor Stack](https://github.com/KomMonitor)
    - [Github Wiki for KomMonitor Guidance and central Documentation](https://github.com/KomMonitor/KomMonitor-Docs/wiki)
    - [Technical Guidance](https://github.com/KomMonitor/KomMonitor-Docs/wiki/Technische-Dokumentation) and [Deployment Information](https://github.com/KomMonitor/KomMonitor-Docs/wiki/Setup-Guide) for complete KomMonitor stack on Github Wiki
@@ -19,9 +20,11 @@ This **Client Config Service** offers REST endpoints to store and fetch configur
 The respective content of each file may change over time. Please refer to the documentation of the [KomMonitor Web Client component](https://github.com/KomMonitor/web-client) to inspect each config file options or get hints on how to adjust contents. 
 
 The service is implemented as a NodeJS server application. 
+The described REST operations are specified using [Swagger/OpenAPI v3](https://swagger.io). The corresponding ```openapi.yaml``` containing the REST API specification is located at ```api/openapi.yaml```. To inspect the REST API you may use the online [Swagger Editor](https://editor.swagger.io/) or, having access to a running instance of the **KomMonitor Client Config REST API** simply navigate to ```<pathToDeyployedInstance>/docs```, e.g. ```localhost:8088/docs```.
 
 ## Dependencies to other KomMonitor Components
-KomMonitor Client Config service currently has no dependencies. It is required by **Web client** component. In Future a Keycloak connection should be implemented to secure REST endpoint access if KomMonitor is launched using Keycloak-based data protection 
+Since version 2.0.0 KomMonitor Client Config service requires **Keycloak** for authenticated access to POST requests. Only KomMonitor administrators shall be allowed to call the POST endpoints of this service. Within the Keycloak realm the **client-config** component must be integrated as a realm client with access type ***confidential*** so that a keycloak secret can be retrieved and configured.
+The **client config** component itself is required by **Web client** component.
 
 
 
@@ -63,7 +66,13 @@ services:
       volumes:
        - client_config_storage:/code/configStorage        # persist web client config files on disk
       environment:
-       - PORT=8088  
+       - PORT=8088  # port
+       - KEYCLOAK_ENABLED=true # enable/disable keycloak
+       - KEYCLOAK_REALM=kommonitor # keycloak realm name
+       - KEYCLOAK_AUTH_SERVER_URL=http://localhost:8080/auth/ # keycloak target URL inlcuding /auth/
+       - KEYCLOAK_RESOURCE=kommonitor-client-config # keycloak client name
+       - KEYCLOAK_CLIENT_SECRET=keycloak-secret # keycloak client secret using access type confidential
+       - KOMMONITOR_ADMIN_ROLENAME=kommonitor-creator # name of kommonitor admin role within keycloak - default is 'kommonitor-creator' 
 
 ```
 
