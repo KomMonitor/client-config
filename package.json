@@ -24,7 +24,7 @@
     "dotenv": "^6.0.0",
     "express": "^4.17.1",
     "js-yaml": "^3.3.0",
-    "kommonitor-keycloak-helper": "git+https://github.com/KomMonitor/keycloak-helper.git",
+    "kommonitor-keycloak-helper": "^1.1.0",
     "oas3-tools": "^2.2.3",
     "querystring": "^0.2.1"
   },
