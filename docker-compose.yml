@@ -33,7 +33,7 @@ services:
        - PORT=8088  # port
        - KEYCLOAK_ENABLED=true # enable/disable keycloak
        - KEYCLOAK_REALM=kommonitor # keycloak realm name
-       - KEYCLOAK_AUTH_SERVER_URL=http://localhost:8080/auth/ # keycloak target URL inlcuding /auth/
+       - KEYCLOAK_AUTH_SERVER_URL=http://localhost:8080/ # keycloak target URL inlcuding /auth/
        - KEYCLOAK_RESOURCE=kommonitor-client-config # keycloak client name
        - KEYCLOAK_CLIENT_SECRET=keycloak-secret # keycloak client secret using access type confidential
        - KOMMONITOR_ADMIN_ROLENAME=kommonitor-creator # name of kommonitor admin role within keycloak - default is 'kommonitor-creator' 

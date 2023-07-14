@@ -1,4 +1,5 @@
 FROM node:alpine
+RUN apk add --no-cache gettext
 RUN mkdir -p /code/tmp
 COPY . /code
 WORKDIR /code
