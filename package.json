@@ -21,7 +21,7 @@
     "connect": "^3.2.0",
     "cors": "^2.8.4",
     "dotenv": "^6.0.0",
-    "express": "^4.17.1",
+    "express": "^4.17.3",
     "js-yaml": "^3.3.0",
     "kommonitor-keycloak-helper": "^1.1.0",
     "oas3-tools": "^2.2.3",
