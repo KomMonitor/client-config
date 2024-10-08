@@ -139,3 +139,41 @@ paths:
         500:
           description: Error
           content: {}
+  /client-folter-config:
+    x-router-controller: WebClientFilterConfig
+    get:
+      tags:
+      - web-client filter config
+      summary: retrieve web app client filter config.
+      description: retrieve web app client filter config.
+      operationId: getWebAppFilterConfig
+      responses:
+        200:
+          description: The web app filter config file as JSON file.
+          content:
+            application/json:
+              schema:
+                type: string
+                format: binary
+    post:
+      tags:
+      - web-client filter config
+      summary: Send web app client filter config to be stored on server.
+      description: Send web app client filter config to be stored on server.
+      operationId: postWebAppFilterConfig
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              properties:
+                appConfig:
+                  type: string
+                  description: The file to upload as JSON file.
+                  format: binary
+      responses:
+        200:
+          description: OK
+          content: {}
+        500:
+          description: Error
+          content: {}
