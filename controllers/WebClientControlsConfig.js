@@ -10,9 +10,14 @@ module.exports.getWebAppControlsConfig = function getWebAppControlsConfig (req, 
 };
 
 module.exports.postWebAppControlsConfig = function postWebAppControlsConfig (req, res, next) {
-  var appConfig = req.files[0];
+  if(!req.files.appConfig) {
+    var errorResponse = utils.respondWithCode(500, {error: "Missing parameter 'appConfig'."});
+    utils.writeJson(res, errorResponse);
+    return;
+  }
+  var appConfig = req.files.appConfig;
 
-  fs.writeFileSync(storageLocation, appConfig.buffer, function (error) {
+  fs.writeFileSync(storageLocation, appConfig.data, function (error) {
     if (error) {
       console.error("ERROR: response object: " + error);
 

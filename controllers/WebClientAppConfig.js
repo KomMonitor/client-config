@@ -1,19 +1,24 @@
 'use strict';
 
+const { log } = require('console');
 var utils = require('../utils/writer.js');
 var fs = require("fs");
 
 const storageLocation = "./configStorage/webClientAppConfig.js";
 
 module.exports.getWebAppConfig = function getWebAppConfig(req, res, next) {
-
   res.download(storageLocation, "appConfig.js");
 };
 
 module.exports.postWebAppConfig = function postWebAppConfig(req, res, next) {
-  var appConfig = req.files[0];
+  if(!req.files.appConfig) {
+    var errorResponse = utils.respondWithCode(500, {error: "Missing parameter 'appConfig'."});
+    utils.writeJson(res, errorResponse);
+    return;
+  }
+  var appConfig = req.files.appConfig;
 
-  fs.writeFileSync(storageLocation, appConfig.buffer, function (error) {
+  fs.writeFileSync(storageLocation, appConfig.data, function (error) {
     if (error) {
       console.error("ERROR: response object: " + error);
 

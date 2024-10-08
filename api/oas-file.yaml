@@ -15,7 +15,6 @@ externalDocs:
   url: http://swagger.io
 servers:
 - url: http://localhost:8088/config
-- url: https://localhost:8088/config
 tags:
 - name: web-client app config
   description: Config for Web Client application configuration
@@ -25,6 +24,7 @@ tags:
   description: Config for Web Client controls configuration
 paths:
   /client-app-config:
+    x-router-controller: WebClientAppConfig
     get:
       tags:
       - web-client app config
@@ -39,7 +39,6 @@ paths:
               schema:
                 type: string
                 format: binary
-      x-swagger-router-controller: WebClientAppConfig
     post:
       tags:
       - web-client app config
@@ -62,8 +61,10 @@ paths:
         500:
           description: Error
           content: {}
-      x-swagger-router-controller: WebClientAppConfig
+      security:
+        - BearerAuth: []
   /client-keycloak-config:
+    x-router-controller: WebClientKeycloakConfig
     get:
       tags:
       - web-client keycloak config
@@ -78,7 +79,6 @@ paths:
               schema:
                 type: string
                 format: binary
-      x-swagger-router-controller: WebClientKeycloakConfig
     post:
       tags:
       - web-client keycloak config
@@ -101,8 +101,8 @@ paths:
         500:
           description: Error
           content: {}
-      x-swagger-router-controller: WebClientKeycloakConfig
   /client-controls-config:
+    x-router-controller: WebClientControlsConfig
     get:
       tags:
       - web-client controls config
@@ -117,7 +117,6 @@ paths:
               schema:
                 type: string
                 format: binary
-      x-swagger-router-controller: WebClientControlsConfig
     post:
       tags:
       - web-client controls config
@@ -140,4 +139,3 @@ paths:
         500:
           description: Error
           content: {}
-      x-swagger-router-controller: WebClientControlsConfig
