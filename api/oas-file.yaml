@@ -177,3 +177,51 @@ paths:
         500:
           description: Error
           content: {}
+  /client-start-page:
+    x-router-controller: WebClientStartPage
+    get:
+      parameters:
+        - name: pageName
+          in: query
+          description: Name of the start page to retrieve.
+          required: false
+          schema:
+            type: string
+      tags:
+        - web-client start page
+      summary: retrieve web client start page.
+      description: retrieve web app client start page.
+      operationId: getWebAppStartPage
+      responses:
+        200:
+          description: The web app start page file as HTML file.
+          content:
+            application/json:
+              schema:
+                type: string
+                format: binary
+    post:
+      tags:
+      - web-client start page
+      summary: Send web app start page to be stored on server.
+      description: Send web app start page config to be stored on server.
+      operationId: postWebAppStartPage
+      requestBody:
+        content:
+          multipart/form-data:
+            schema:
+              properties:
+                startPage:
+                  type: string
+                  description: The file to upload as JSON file.
+                  format: binary
+                pageName:
+                  type: string
+                  description: The name under which the start page should be stored on server.
+      responses:
+        200:
+          description: OK
+          content: {}
+        500:
+          description: Error
+          content: {}
