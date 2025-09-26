@@ -11,10 +11,7 @@ This NodeJS project is part of the [KomMonitor](http://kommonitor.de) spatial da
 	- [Dependencies to other KomMonitor Components](#dependencies-to-other-kommonitor-components)
 	- [Installation / Building Information](#installation-building-information)
 		- [Configuration](#configuration)
-			- [.env - Configure Deployment Details of other Services](#env-configure-deployment-details-of-other-services)
-		- [Running the NodeJS KomMonitor Processing Engine](#running-the-nodejs-kommonitor-processing-engine)
-			- [Local Manual Startup and Shutdown](#local-manual-startup-and-shutdown)
-			- [Production Startup and Shutdown](#production-startup-and-shutdown)
+		- [Running the NodeJS KomMonitor Client Config Server](#running-the-nodejs-kommonitor-client-config-server)
 		- [Docker](#docker)
 	- [How to Contribute](#how-to-contribute)
 	- [Branching](#branching)
@@ -36,8 +33,9 @@ This NodeJS project is part of the [KomMonitor](http://kommonitor.de) spatial da
 This **Client Config Service** offers REST endpoints to store and fetch configuration files consumed by the KomMonitor **web client** component. Thus it enables dynamic modification of configuration settings within dedicted administration pages of the **web client**. Three configuration files exist within the folder `./configStorage`, each using a non-changeable name for update/retrieval via REST endpoint:
 
 1. general application settings stored in `./configStorage/webClientAppConfig.js`
-2. Keycloak connection parameters stored in `./configStorage/webClientKeycloakConfig.js` - only relevant if KomMonitor stack uses active role-based data access via Keycloak
-3. role-based app element visibility settings to hide certain app functions/elements for non-authorized users/roles in `./configStorage/webClientControlsConfig.js` - only relevant if KomMonitor stack uses active role-based data access via Keycloak
+2. Keycloak connection parameters stored in `./configStorage/webClientKeycloakConfig.js` 
+3. group-based app element visibility settings to hide certain app functions/elements for non-authorized users/groups in `./configStorage/webClientControlsConfig.js`
+4. global filter definitions for grouping topics, indicator and georesources in `./configStorage/webClientFilterConfig.js`
 
 The respective content of each file may change over time. Please refer to the documentation of the [KomMonitor Web Client component](https://github.com/KomMonitor/web-client) to inspect each config file options or get hints on how to adjust contents. 
 
@@ -80,28 +78,27 @@ KOMMONITOR_ADMIN_ROLENAME=kommonitor-creator
 
 After adjusting the configuration to your target environment, you may continue to build and run the service as described next.
 
-### Running the NodeJS KomMonitor Processing Engine
+### Running the NodeJS KomMonitor Client Config Server
 #### Local Manual Startup and Shutdown
-Make sure you have installed all node dependencies by calling `npm install`. The to locally start the server enter command `npm start` from the project root, which will launch the app and serve it according to port setting at `localhost:<PORT>` (per default `localhost:8088`). In a browser call ``localhost:<PORT>/docs`` to inspect the REST API.
-To shutdown simply hit `CTRL+c` in the terminal.
-
-#### Production Startup and Shutdown
-To launch and monitor any NodeJS app in production environment, we recommend the Node Process Manager [PM2](http://pm2.keymetrics.io/). It is a node module itself and is able to manage and monitor NodeJS application by executing simple command like `pm2 start app.js`, `pm2 restart app.js`, `pm2 stop app.js`, `pm2 delete app.js`. Via ``pm2 list`` a status monitor for running applications can be displayed. See [PM2 Quickstart Guide](http://pm2.keymetrics.io/docs/usage/quick-start/) for further information and way more details.
-
-PM2 can even be registered as system service, so it can be automatically restarted on server restart, thus ensuring that the registered applications will be relaunched also. Depending on your host environment (e.g. ubuntu, windows, mac), the process differs. Please follow [PM2 Startup hints](http://pm2.keymetrics.io/docs/usage/startup/) for detailed information.
-
-When installed and configured PM2, the **KomMonitor Processing Engine** can be started and monitored via `pm2 start index.js --name <app_name>` (while `<app_name>` is optional, it should be set individually, e.g. `km-client-config`, otherwise the application will be called `index`), executed from project root. To check application status just hit `pm2 list` and inspect the resulting dashboard for the entry with the specified `<app_name>`.
-
-To shutdown call `pm2 stop <app_name>` in the terminal. This will stop the service. To completely remove it from PM2, call `pm2 delete <app_name>`.
+Make sure you have installed all node dependencies by calling `npm install`. The to locally start the server
+enter command `npm start` from the project root, which will launch the app and serve it according to port
+setting at `localhost:<PORT>` (per default `localhost:8088`). In a browser call ``localhost:<PORT>/docs`` to
+inspect the REST API. To shutdown simply hit `CTRL+c` in the terminal.
 
 ### Docker
-The **KomMonitor Client Config** component can also be build and deployed as Docker image (i.e. `docker build -t kommonitor/client-config:latest .`). The project contains the associated `Dockerfile` and an exemplar `docker-compose.yml` on project root level. The Dockerfile contains a `RUN npm install --production` command, so necessary node dependencies will be fetched on build time.
+The **KomMonitor Client Config** component can also be build and deployed as Docker image 
+(i.e. `docker build -t kommonitor/client-config:latest .`). The project contains the associated `Dockerfile`
+and an exemplar `docker-compose.yml` on project root level. The Dockerfile contains a
+`RUN npm install --production` command, so necessary node dependencies will be fetched on build time.
 
-The exemplar [docker-compose.yml](./docker-compose.yml) file specifies only a the **web client** and **client config service** components of the KomMonitor stack
+The exemplar [docker-compose.yml](./docker-compose.yml) file specifies only a the **web client** and
+**client config service** components of the KomMonitor stack
 
 ### Exemplar docker-compose File with explanatory comments
 
-Only contains subset of whole KomMonitor stack to focus on the config parameters of this component. See separate [KomMonitor docker repository](https://github.com/KomMonitor/docker) for full information on launching all KomMonitor components via docker.
+Only contains subset of whole KomMonitor stack to focus on the config parameters of this component. See
+separate [KomMonitor docker repository](https://github.com/KomMonitor/docker) for full information on launching
+all KomMonitor components via docker.
 
 ```yml
 
