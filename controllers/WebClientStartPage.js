@@ -30,7 +30,7 @@ module.exports.postWebAppStartPage = function postWebAppStartPage (req, res, nex
   }
   var startPage = req.files.startPage;
 
-  if(req.body.pageName) {
+  if(req.body && req.body.pageName) {
     var storageLocation = rootStorage + req.body.pageName;
   } else {
     var storageLocation = rootStorage + defaultStartPageName;
