@@ -23,6 +23,7 @@ var options = {
 };
 
 var app = express();
+app.use(express.json());
 app.use(fileUpload());
 
 const corsOptions = {

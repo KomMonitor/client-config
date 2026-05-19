@@ -22,6 +22,8 @@ tags:
   description: Config for Web Client Keycloak configuration
 - name: web-client controls config
   description: Config for Web Client controls configuration
+- name: dashboard config
+  description: Manage dashboard configurations with ID-based storage
 paths:
   /client-app-config:
     x-router-controller: WebClientAppConfig
@@ -226,3 +228,115 @@ paths:
         500:
           description: Error
           content: {}
+  /dashboards:
+    x-router-controller: DashboardConfigController
+    get:
+      tags:
+      - dashboard config
+      summary: List all dashboard configurations
+      description: Get a list of all available dashboard configuration IDs
+      operationId: listDashboardConfigs
+      responses:
+        200:
+          description: List of dashboard configuration IDs
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  dashboards:
+                    type: array
+                    items:
+                      type: string
+        500:
+          description: Error
+          content: {}
+  /dashboards/{dashboardId}:
+    x-router-controller: DashboardConfigController
+    get:
+      tags:
+      - dashboard config
+      summary: Retrieve a dashboard configuration by ID
+      description: Get a dashboard configuration stored with the specified ID
+      operationId: getDashboardConfig
+      parameters:
+      - name: dashboardId
+        in: path
+        description: The ID of the dashboard configuration to retrieve
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: The dashboard configuration
+          content:
+            application/json:
+              schema:
+                type: object
+        404:
+          description: Dashboard configuration not found
+          content: {}
+        500:
+          description: Error
+          content: {}
+    post:
+      tags:
+      - dashboard config
+      summary: Create or update a dashboard configuration
+      description: Store a dashboard configuration with the specified ID
+      operationId: postDashboardConfig
+      parameters:
+      - name: dashboardId
+        in: path
+        description: The ID under which to store the dashboard configuration
+        required: true
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+      responses:
+        201:
+          description: Dashboard configuration created/updated successfully
+          headers:
+            Location:
+              description: The path to the created/updated configuration
+              schema:
+                type: string
+          content: {}
+        400:
+          description: Bad request
+          content: {}
+        500:
+          description: Error
+          content: {}
+      security:
+        - BearerAuth: []
+    delete:
+      tags:
+      - dashboard config
+      summary: Delete a dashboard configuration
+      description: Delete the dashboard configuration with the specified ID
+      operationId: deleteDashboardConfig
+      parameters:
+      - name: dashboardId
+        in: path
+        description: The ID of the dashboard configuration to delete
+        required: true
+        schema:
+          type: string
+      responses:
+        204:
+          description: Dashboard configuration deleted successfully
+          content: {}
+        404:
+          description: Dashboard configuration not found
+          content: {}
+        500:
+          description: Error
+          content: {}
+      security:
+        - BearerAuth: []
