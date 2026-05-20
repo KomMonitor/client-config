@@ -34,8 +34,9 @@ module.exports.postDashboardConfig = function postDashboardConfig(req, res, next
 
     logger.info(`Dashboard configuration '${dashboardId}' was saved successfully`);
 
-    var responseWithLocationHeader = utils.respondWithLocationHeader(201, `/dashboards/${dashboardId}`);
-    utils.writeLocationHeader(res, responseWithLocationHeader);
+    res.set('Location', `/dashboards/${dashboardId}`);
+    var response = utils.respondWithCode(201, { dashboardId: dashboardId });
+    utils.writeJson(res, response);
   } catch (error) {
     logger.error('Error saving dashboard configuration:', { error: error.message, stack: error.stack });
     var errorResponse = utils.respondWithCode(500, { error: 'Failed to save dashboard configuration', details: error.message });

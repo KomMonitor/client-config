@@ -271,7 +271,14 @@ paths:
               description: The path to the created configuration
               schema:
                 type: string
-          content: {}
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  dashboardId:
+                    type: string
+                    description: The ID of the created dashboard configuration
         400:
           description: Bad request
           content: {}
