@@ -7,6 +7,7 @@ var fs = require('fs'),
     http = require('http');
 const oasTools = require("@oas-tools/core");
 const fileUpload = require('express-fileupload');
+const logger = require('./utils/logger');
 
 var keycloakHelperService = require("kommonitor-keycloak-helper");
 keycloakHelperService.initKeycloakHelper(process.env.KEYCLOAK_AUTH_SERVER_URL, process.env.KEYCLOAK_REALM, process.env.KEYCLOAK_RESOURCE, process.env.KEYCLOAK_CLIENT_SECRET, undefined, undefined, process.env.KOMMONITOR_ADMIN_ROLENAME);
@@ -42,8 +43,8 @@ if(JSON.parse(process.env.KEYCLOAK_ENABLED)){
 }
 
 oasTools.initialize(app).then(() => {
-  http.createServer(app).listen(serverPort, () => function () {
-    console.log('Your server is listening on port %d (http://localhost:%d)', serverPort, serverPort);
-    console.log('Swagger-ui is available on http://localhost:%d/docs', serverPort);
+  http.createServer(app).listen(serverPort, () => {
+    logger.info(`Server listening on port ${serverPort} (http://localhost:${serverPort})`);
+    logger.info(`Swagger-ui available at http://localhost:${serverPort}/docs`);
   });
 });

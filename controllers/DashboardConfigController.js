@@ -4,6 +4,7 @@ var utils = require('../utils/writer.js');
 var fs = require('fs');
 var path = require('path');
 var { randomUUID } = require('crypto');
+var logger = require('../utils/logger');
 
 const storageDirectory = './configStorage/dashboards/';
 
@@ -31,12 +32,12 @@ module.exports.postDashboardConfig = function postDashboardConfig(req, res, next
 
     fs.writeFileSync(filePath, jsonContent, 'utf8');
 
-    console.log(`Dashboard configuration '${dashboardId}' was saved successfully`);
+    logger.info(`Dashboard configuration '${dashboardId}' was saved successfully`);
 
     var responseWithLocationHeader = utils.respondWithLocationHeader(201, `/dashboards/${dashboardId}`);
     utils.writeLocationHeader(res, responseWithLocationHeader);
   } catch (error) {
-    console.error('Error saving dashboard configuration:', error);
+    logger.error('Error saving dashboard configuration:', { error: error.message, stack: error.stack });
     var errorResponse = utils.respondWithCode(500, { error: 'Failed to save dashboard configuration', details: error.message });
     utils.writeJson(res, errorResponse);
   }
@@ -69,7 +70,7 @@ module.exports.getDashboardConfig = function getDashboardConfig(req, res, next) 
     var response = utils.respondWithCode(200, dashboard);
     utils.writeJson(res, response);
   } catch (error) {
-    console.error('Error retrieving dashboard configuration:', error);
+    logger.error('Error retrieving dashboard configuration:', { error: error.message, stack: error.stack });
     var errorResponse = utils.respondWithCode(500, { error: 'Failed to retrieve dashboard configuration', details: error.message });
     utils.writeJson(res, errorResponse);
   }
@@ -98,13 +99,13 @@ module.exports.deleteDashboardConfig = function deleteDashboardConfig(req, res, 
 
     fs.unlinkSync(filePath);
 
-    console.log(`Dashboard configuration '${dashboardId}' was deleted successfully`);
+    logger.info(`Dashboard configuration '${dashboardId}' was deleted successfully`);
 
     var response = utils.respondWithCode(204, null);
     res.writeHead(204);
     res.end();
   } catch (error) {
-    console.error('Error deleting dashboard configuration:', error);
+    logger.error('Error deleting dashboard configuration:', { error: error.message, stack: error.stack });
     var errorResponse = utils.respondWithCode(500, { error: 'Failed to delete dashboard configuration', details: error.message });
     utils.writeJson(res, errorResponse);
   }
@@ -129,7 +130,7 @@ module.exports.listDashboardConfigs = function listDashboardConfigs(req, res, ne
     var response = utils.respondWithCode(200, { dashboards: dashboards });
     utils.writeJson(res, response);
   } catch (error) {
-    console.error('Error listing dashboard configurations:', error);
+    logger.error('Error listing dashboard configurations:', { error: error.message, stack: error.stack });
     var errorResponse = utils.respondWithCode(500, { error: 'Failed to list dashboard configurations', details: error.message });
     utils.writeJson(res, errorResponse);
   }

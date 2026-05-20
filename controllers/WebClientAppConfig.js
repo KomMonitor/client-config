@@ -3,6 +3,7 @@
 const { log } = require('console');
 var utils = require('../utils/writer.js');
 var fs = require("fs");
+var logger = require('../utils/logger');
 
 const storageLocation = "./configStorage/webClientAppConfig.js";
 
@@ -20,7 +21,7 @@ module.exports.postWebAppConfig = function postWebAppConfig(req, res, next) {
 
   fs.writeFileSync(storageLocation, appConfig.data, function (error) {
     if (error) {
-      console.error("ERROR: response object: " + error);
+      logger.error("ERROR: response object: " + error);
 
       var errorResponseWithLocationHeader = utils.respondWithLocationHeader(500, error);
       utils.writeLocationHeader(res, errorResponseWithLocationHeader);
@@ -29,7 +30,7 @@ module.exports.postWebAppConfig = function postWebAppConfig(req, res, next) {
     }
   });
 
-  console.log("New web app config file was saved!");
+  logger.info("New web app config file was saved!");
 
   var responseWithLocationHeader = utils.respondWithLocationHeader(201, storageLocation);
 

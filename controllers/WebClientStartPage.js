@@ -2,6 +2,7 @@
 
 var utils = require('../utils/writer.js');
 var fs = require("fs");
+var logger = require('../utils/logger');
 
 const rootStorage = "./configStorage/";
 const defaultStartPageName = "webClientStartPage.html"
@@ -38,7 +39,7 @@ module.exports.postWebAppStartPage = function postWebAppStartPage (req, res, nex
 
   fs.writeFileSync(storageLocation, startPage.data, function (error) {
     if (error) {
-      console.error("ERROR: response object: " + error);
+      logger.error("ERROR: response object: " + error);
 
       var errorResponseWithLocationHeader = utils.respondWithLocationHeader(500, error);
       utils.writeLocationHeader(res, errorResponseWithLocationHeader);
@@ -47,7 +48,7 @@ module.exports.postWebAppStartPage = function postWebAppStartPage (req, res, nex
     }
   });
 
-  console.log("New web start page file was saved at " + storageLocation + "!");
+  logger.info("New web start page file was saved at " + storageLocation + "!");
 
   var responseWithLocationHeader = utils.respondWithLocationHeader(201, storageLocation);
 

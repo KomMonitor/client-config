@@ -2,6 +2,7 @@
 
 var utils = require('../utils/writer.js');
 var fs = require("fs");
+var logger = require('../utils/logger');
 
 const storageLocation = "./configStorage/webClientFilterConfig.json";
 
@@ -19,7 +20,7 @@ module.exports.postWebAppFilterConfig = function postWebAppFilterConfig (req, re
 
   fs.writeFileSync(storageLocation, appConfig.data, function (error) {
     if (error) {
-      console.error("ERROR: response object: " + error);
+      logger.error("ERROR: response object: " + error);
 
       var errorResponseWithLocationHeader = utils.respondWithLocationHeader(500, error);
       utils.writeLocationHeader(res, errorResponseWithLocationHeader);
@@ -28,7 +29,7 @@ module.exports.postWebAppFilterConfig = function postWebAppFilterConfig (req, re
     }
   });
 
-  console.log("New web app filter config file was saved!");
+  logger.info("New web app filter config file was saved!");
 
   var responseWithLocationHeader = utils.respondWithLocationHeader(201, storageLocation);
 

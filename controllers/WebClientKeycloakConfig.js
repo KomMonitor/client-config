@@ -2,6 +2,7 @@
 
 var utils = require('../utils/writer.js');
 var fs = require("fs");
+var logger = require('../utils/logger');
 
 const storageLocation = "./configStorage/webClientKeycloakConfig.json";
 
@@ -19,7 +20,7 @@ module.exports.postWebAppKeycloakConfig = function postWebAppKeycloakConfig (req
 
   fs.writeFileSync(storageLocation, appConfig.data, function (error) {
     if (error) {
-      console.error("ERROR: response object: " + error);
+      logger.error("ERROR: response object: " + error);
 
       var errorResponseWithLocationHeader = utils.respondWithLocationHeader(500, error);
       utils.writeLocationHeader(res, errorResponseWithLocationHeader);
@@ -28,7 +29,7 @@ module.exports.postWebAppKeycloakConfig = function postWebAppKeycloakConfig (req
     }
   });
 
-  console.log("New web app keycloak config file was saved!");
+  logger.info("New web app keycloak config file was saved!");
 
   var responseWithLocationHeader = utils.respondWithLocationHeader(201, storageLocation);
 
