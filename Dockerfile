@@ -25,6 +25,9 @@ RUN addgroup -g 1001 -S nodejs && \
 # Set proper permissions
 RUN chown -R nodejs:nodejs /app
 
+# Create symlink for backward compatibility
+RUN ln -s /app /code
+
 # Switch to non-root user
 USER nodejs
 
