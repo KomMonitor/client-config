@@ -7,14 +7,16 @@ networks:
 
 services:
   keycloak:
-    image: quay.io/keycloak/keycloak:24.0.5
+    image: kommonitor/keycloak:26.5.5-postgres
+    entrypoint: /opt/keycloak/bin/kc.sh start-dev
     container_name: keycloak
     restart: unless-stopped
     volumes:
       - ./realms/realm-export.json:/opt/keycloak/data/import/realm.json
+      - ./storage/keycloak-db/data:/opt/keycloak/data/h2
     command:
-      - start-dev
       - --import-realm
+      - --features=admin-fine-grained-authz:v1,scripts,
     expose:
       - 8080
     ports:
@@ -22,6 +24,6 @@ services:
     networks:
       - kommonitor
     environment:
-      - KEYCLOAK_ADMIN=admin
-      - KEYCLOAK_ADMIN_PASSWORD=admin
+      - KC_BOOTSTRAP_ADMIN_USERNAME=admin
+      - KC_BOOTSTRAP_ADMIN_PASSWORD=admin
       - KC_DB=dev-file
