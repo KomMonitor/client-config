@@ -3,6 +3,7 @@
 var utils = require('../utils/writer.js');
 var fs = require('fs');
 var path = require('path');
+var { randomUUID } = require('crypto');
 
 const storageDirectory = './configStorage/dashboards/';
 
@@ -12,18 +13,11 @@ if (!fs.existsSync(storageDirectory)) {
 }
 
 /**
- * Create or update a dashboard configuration
+ * Create a new dashboard configuration with auto-generated UUID
  */
 module.exports.postDashboardConfig = function postDashboardConfig(req, res, next) {
   try {
-    const dashboardId = req.params.dashboardId;
     const body = req.body;
-
-    if (!dashboardId) {
-      var errorResponse = utils.respondWithCode(400, { error: 'dashboardId is required' });
-      utils.writeJson(res, errorResponse);
-      return;
-    }
 
     if (!body || Object.keys(body).length === 0) {
       var errorResponse = utils.respondWithCode(400, { error: 'Request body is required' });
@@ -31,6 +25,7 @@ module.exports.postDashboardConfig = function postDashboardConfig(req, res, next
       return;
     }
 
+    const dashboardId = randomUUID();
     const filePath = path.join(storageDirectory, `${dashboardId}.json`);
     const jsonContent = JSON.stringify(body, null, 2);
 

@@ -251,6 +251,35 @@ paths:
         500:
           description: Error
           content: {}
+    post:
+      tags:
+      - dashboard config
+      summary: Create a new dashboard configuration
+      description: Create and store a new dashboard configuration with an auto-generated UUID
+      operationId: postDashboardConfig
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+      responses:
+        201:
+          description: Dashboard configuration created successfully
+          headers:
+            Location:
+              description: The path to the created configuration
+              schema:
+                type: string
+          content: {}
+        400:
+          description: Bad request
+          content: {}
+        500:
+          description: Error
+          content: {}
+      security:
+        - BearerAuth: []
   /dashboards/{dashboardId}:
     x-router-controller: DashboardConfigController
     get:
@@ -279,42 +308,6 @@ paths:
         500:
           description: Error
           content: {}
-    post:
-      tags:
-      - dashboard config
-      summary: Create or update a dashboard configuration
-      description: Store a dashboard configuration with the specified ID
-      operationId: postDashboardConfig
-      parameters:
-      - name: dashboardId
-        in: path
-        description: The ID under which to store the dashboard configuration
-        required: true
-        schema:
-          type: string
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: object
-      responses:
-        201:
-          description: Dashboard configuration created/updated successfully
-          headers:
-            Location:
-              description: The path to the created/updated configuration
-              schema:
-                type: string
-          content: {}
-        400:
-          description: Bad request
-          content: {}
-        500:
-          description: Error
-          content: {}
-      security:
-        - BearerAuth: []
     delete:
       tags:
       - dashboard config
