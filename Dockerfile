@@ -23,7 +23,14 @@ RUN addgroup -g 1001 -S nodejs && \
     adduser -S nodejs -u 1001
 
 # Set proper permissions
-RUN chown -R nodejs:nodejs /app
+RUN chown -R nodejs:nodejs /app && \
+    chmod -R 755 /app && \
+    chmod -R 775 /app/configStorage
+
+# Ensure configStorage/dashboards directory exists with proper permissions
+RUN mkdir -p /app/configStorage/dashboards && \
+    chown -R nodejs:nodejs /app/configStorage/dashboards && \
+    chmod -R 775 /app/configStorage/dashboards
 
 # Create symlink for backward compatibility
 RUN ln -s /app /code
