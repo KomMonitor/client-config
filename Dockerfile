@@ -18,22 +18,20 @@ RUN npm ci --only=production
 # Copy application files
 COPY . .
 
+# Create symlink for backward compatibility
+RUN ln -s /app /code
+
+# Create all required directories
+RUN mkdir -p /app/configStorage/dashboards
+
 # Create non-root user for security
 RUN addgroup -g 1001 -S nodejs && \
     adduser -S nodejs -u 1001
 
-# Set proper permissions
+# Apply permissions
 RUN chown -R nodejs:nodejs /app && \
     chmod -R 755 /app && \
-    chmod -R 775 /app/configStorage
-
-# Ensure configStorage/dashboards directory exists with proper permissions
-RUN mkdir -p /app/configStorage/dashboards && \
-    chown -R nodejs:nodejs /app/configStorage/dashboards && \
-    chmod -R 775 /app/configStorage/dashboards
-
-# Create symlink for backward compatibility
-RUN ln -s /app /code
+    chmod -R 775 /app/configStorage /app/configStorage/dashboards
 
 # Switch to non-root user
 USER nodejs
