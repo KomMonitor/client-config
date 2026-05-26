@@ -36,7 +36,7 @@ app.use(/.*/, cors(corsOptions));
 if(JSON.parse(process.env.KEYCLOAK_ENABLED)){
   app.use(async function(req, res, next) {
     // intercept requests to perform any keycloak protection checks.
-    await keycloakHelperService.checkKeycloakProtection(req, res, next, "POST");
+    await keycloakHelperService.checkKeycloakProtectionClientConfig(req, res, next, "POST");
   });
 }
 
