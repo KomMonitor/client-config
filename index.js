@@ -9,7 +9,8 @@ const oasTools = require("@oas-tools/core");
 const fileUpload = require('express-fileupload');
 
 var keycloakHelperService = require("kommonitor-keycloak-helper");
-keycloakHelperService.initKeycloakHelper(process.env.KEYCLOAK_AUTH_SERVER_URL, process.env.KEYCLOAK_REALM, process.env.KEYCLOAK_RESOURCE, process.env.KEYCLOAK_CLIENT_SECRET, undefined, undefined, process.env.KOMMONITOR_ADMIN_ROLENAME);
+var kommonitorConfigAllowedRolesPostfixes = process.env.KOMMONITOR_CONFIG_ROLES_POSTFIXES.split(",");
+keycloakHelperService.initKeycloakHelper(process.env.KEYCLOAK_AUTH_SERVER_URL, process.env.KEYCLOAK_REALM, process.env.KEYCLOAK_RESOURCE, process.env.KEYCLOAK_CLIENT_SECRET, undefined, undefined, process.env.KOMMONITOR_ADMIN_ROLENAME, kommonitorConfigAllowedRolesPostfixes);
 
 var jsyaml = require('js-yaml');
 var cors = require('cors');
