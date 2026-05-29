@@ -34,11 +34,21 @@ const corsOptions = {
 // Add headers
 app.use(/.*/, cors(corsOptions));
 
-if(JSON.parse(process.env.KEYCLOAK_ENABLED)){
-  app.use(async function(req, res, next) {
-    // intercept requests to perform any keycloak protection checks.
-    await keycloakHelperService.checkKeycloakProtectionClientConfig(req, res, next, "POST");
-  });
+const checkProtection = (req, res, next) => {
+  return keycloakHelperService.checkKeycloakProtection(req, res, next, 'POST');
+};
+
+const checkProtectionClientConfig = (req, res, next) => {
+  return keycloakHelperService.checkKeycloakProtectionClientConfig(req, res, next, 'POST');
+};
+
+if (JSON.parse(process.env.KEYCLOAK_ENABLED)) {
+  app.use(
+    ['/config/client-app-config', '/config/client-keycloak-config', '/config/client-controls-config', '/config/client-start-page'],
+    checkProtection
+  );
+
+  app.use('/config/client-filter-config', checkProtectionClientConfig);
 }
 
 oasTools.initialize(app).then(() => {
