@@ -10,7 +10,8 @@ const fileUpload = require('express-fileupload');
 const logger = require('./utils/logger');
 
 var keycloakHelperService = require("kommonitor-keycloak-helper");
-keycloakHelperService.initKeycloakHelper(process.env.KEYCLOAK_AUTH_SERVER_URL, process.env.KEYCLOAK_REALM, process.env.KEYCLOAK_RESOURCE, process.env.KEYCLOAK_CLIENT_SECRET, undefined, undefined, process.env.KOMMONITOR_ADMIN_ROLENAME);
+var kommonitorConfigAllowedRolesPostfixes = process.env.KOMMONITOR_CONFIG_ROLES_POSTFIXES.split(",");
+keycloakHelperService.initKeycloakHelper(process.env.KEYCLOAK_AUTH_SERVER_URL, process.env.KEYCLOAK_REALM, process.env.KEYCLOAK_RESOURCE, process.env.KEYCLOAK_CLIENT_SECRET, undefined, undefined, process.env.KOMMONITOR_ADMIN_ROLENAME, kommonitorConfigAllowedRolesPostfixes);
 
 var jsyaml = require('js-yaml');
 var cors = require('cors');
@@ -35,11 +36,21 @@ const corsOptions = {
 // Add headers
 app.use(/.*/, cors(corsOptions));
 
-if(JSON.parse(process.env.KEYCLOAK_ENABLED)){
-  app.use(async function(req, res, next) {
-    // intercept requests to perform any keycloak protection checks.
-    await keycloakHelperService.checkKeycloakProtection(req, res, next, ["POST", "PUT", "PATCH", "DELETE"]);
-  });
+const checkProtection = (req, res, next) => {
+  return keycloakHelperService.checkKeycloakProtection(req, res, next, ["POST", "PUT", "PATCH", "DELETE"]);
+};
+
+const checkProtectionClientConfig = (req, res, next) => {
+  return keycloakHelperService.checkKeycloakProtectionClientConfig(req, res, next, ["POST", "PUT", "PATCH", "DELETE"]);
+};
+
+if (JSON.parse(process.env.KEYCLOAK_ENABLED)) {
+  app.use(
+    ['/config/client-app-config', '/config/client-keycloak-config', '/config/client-controls-config', '/config/client-start-page'],
+    checkProtection
+  );
+
+  app.use('/config/client-filter-config', checkProtectionClientConfig);
 }
 
 oasTools.initialize(app).then(() => {
