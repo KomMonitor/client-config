@@ -18,21 +18,21 @@
   "private": true,
   "dependencies": {
     "@oas-tools/core": "^3.1.0",
-    "axios": "^1.12.2",
+    "axios": "^1.16.1",
     "connect": "^3.7.0",
-    "cors": "^2.8.5",
-    "dotenv": "^17.2.2",
-    "express": "^4.21.2",
-    "js-yaml": "^4.1.0",
-    "kommonitor-keycloak-helper": "^1.1.0",
-    "express-fileupload": "^1.5.2"
+    "cors": "^2.8.6",
+    "dotenv": "^17.4.2",
+    "express": "^4.22.2",
+    "express-fileupload": "^1.5.2",
+    "js-yaml": "^4.1.1",
+    "kommonitor-keycloak-helper": "github:KomMonitor/keycloak-helper#develop"
   },
   "devDependencies": {
-    "@release-it/keep-a-changelog": "^7.0.0",
+    "@release-it/keep-a-changelog": "^7.0.1",
     "jshint": "^2.13.6",
     "license-checker": "^25.0.1",
     "npm-license-crawler": "^0.2.1",
-    "release-it": "^19.0.5"
+    "release-it": "^19.2.4"
   },
   "jshintConfig": {
     "undef": true,
