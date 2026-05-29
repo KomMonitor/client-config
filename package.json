@@ -25,7 +25,7 @@
     "express": "^4.22.2",
     "express-fileupload": "^1.5.2",
     "js-yaml": "^4.1.1",
-    "kommonitor-keycloak-helper": "github:KomMonitor/keycloak-helper#develop",
+    "kommonitor-keycloak-helper": "github:KomMonitor/keycloak-helper#master",
     "winston": "^3.19.0"
   },
   "devDependencies": {
