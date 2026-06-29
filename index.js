@@ -25,7 +25,7 @@ var options = {
 };
 
 var app = express();
-app.use(express.json());
+app.use(express.json({ limit: process.env.REQUEST_BODY_SIZE_LIMIT || '10mb' }));
 app.use(fileUpload());
 
 const corsOptions = {
