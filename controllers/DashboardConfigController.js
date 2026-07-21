@@ -78,6 +78,49 @@ module.exports.getDashboardConfig = function getDashboardConfig(req, res, next) 
 };
 
 /**
+ * Update a dashboard configuration by ID
+ */
+module.exports.putDashboardConfig = function putDashboardConfig(req, res, next) {
+  try {
+    const dashboardId = req.params.dashboardId;
+    const body = req.body;
+
+    if (!dashboardId) {
+      var errorResponse = utils.respondWithCode(400, { error: 'dashboardId is required' });
+      utils.writeJson(res, errorResponse);
+      return;
+    }
+
+    if (!body || Object.keys(body).length === 0) {
+      var errorResponse = utils.respondWithCode(400, { error: 'Request body is required' });
+      utils.writeJson(res, errorResponse);
+      return;
+    }
+
+    const filePath = path.join(storageDirectory, `${dashboardId}.json`);
+
+    if (!fs.existsSync(filePath)) {
+      var errorResponse = utils.respondWithCode(404, { error: `Dashboard configuration '${dashboardId}' not found` });
+      utils.writeJson(res, errorResponse);
+      return;
+    }
+
+    const jsonContent = JSON.stringify(body, null, 2);
+    fs.writeFileSync(filePath, jsonContent, 'utf8');
+
+    logger.info(`Dashboard configuration '${dashboardId}' was updated successfully`);
+
+    res.set('Location', `/dashboards/${dashboardId}`);
+    var response = utils.respondWithCode(200, body);
+    utils.writeJson(res, response);
+  } catch (error) {
+    logger.error('Error updating dashboard configuration:', { error: error.message, stack: error.stack });
+    var errorResponse = utils.respondWithCode(500, { error: 'Failed to update dashboard configuration', details: error.message });
+    utils.writeJson(res, errorResponse);
+  }
+};
+
+/**
  * Delete a dashboard configuration by ID
  */
 module.exports.deleteDashboardConfig = function deleteDashboardConfig(req, res, next) {

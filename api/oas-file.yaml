@@ -315,6 +315,43 @@ paths:
         500:
           description: Error
           content: {}
+    put:
+      tags:
+      - dashboard config
+      summary: Update a dashboard configuration
+      description: Override the stored dashboard configuration with the content of the request body
+      operationId: putDashboardConfig
+      parameters:
+      - name: dashboardId
+        in: path
+        description: The ID of the dashboard configuration to update
+        required: true
+        schema:
+          type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+      responses:
+        200:
+          description: Dashboard configuration updated successfully
+          content:
+            application/json:
+              schema:
+                type: object
+        400:
+          description: Bad request
+          content: {}
+        404:
+          description: Dashboard configuration not found
+          content: {}
+        500:
+          description: Error
+          content: {}
+      security:
+        - BearerAuth: []
     delete:
       tags:
       - dashboard config
